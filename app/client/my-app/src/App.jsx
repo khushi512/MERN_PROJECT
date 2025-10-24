@@ -15,6 +15,7 @@ import Saved from './pages/Saved';
 import CreateJob from './pages/CreateJob';
 import MyJobs from './pages/MyJobs';
 import AppliedJobs from './pages/AppliedJobs';
+import Showcase from './pages/Showcase';
 
 import useCurrentUser from "../hooks/useCurrentUser";
 import { useSelector } from "react-redux";
@@ -36,6 +37,7 @@ function App() {
         <Route path="/explore" element={userData ?<Browse /> : <Navigate to="/signin" />} />
         <Route path="/profile" element={userData ?<Profile /> : <Navigate to="/signin" />} />
         <Route path="/saved" element={userData ?<Saved /> : <Navigate to="/signin" />} />
+        <Route path="/showcase" element={<Showcase />} />
 
         <Route path="/create-job" element={userData ? <CreateJob /> : <Navigate to="/signin" />} />
         <Route path="/my-jobs" element={userData ? <MyJobs /> : <Navigate to="/signin" />} />
