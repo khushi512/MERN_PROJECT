@@ -35,7 +35,7 @@ const Saved = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-sky-500">
+      <div className="flex flex-col min-h-screen brand-gradient-bg">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
           <h3 className="text-white font-semibold text-lg animate-pulse">
@@ -48,10 +48,10 @@ const Saved = () => {
 
   if (errorMsg) {
     return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-sky-500 text-center">
+      <div className="flex flex-col min-h-screen brand-gradient-bg text-center">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-md w-[90%] sm:w-[400px]">
+          <div className="card p-8 w-[90%] sm:w-[400px]">
             <h2 className="text-red-500 text-lg font-semibold mb-3">
               {errorMsg}
             </h2>
@@ -64,10 +64,10 @@ const Saved = () => {
 
   if (!userData) {
     return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-sky-500">
+      <div className="flex flex-col min-h-screen brand-gradient-bg">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-md text-center">
+          <div className="card p-8 text-center">
             <h2 className="text-emerald-600 text-xl font-semibold">
               Please sign in to view saved jobs.
             </h2>
@@ -78,15 +78,15 @@ const Saved = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-sky-500">
+    <div className="flex flex-col min-h-screen brand-gradient-bg">
       <Navbar />
 
       <main className="flex-1 pt-24 py-10 px-5 flex flex-col items-center">
-        <div className="w-full max-w-6xl bg-white shadow-lg rounded-2xl px-8 py-10">
-          <h1 className="text-4xl font-bold text-blue-700 mb-4 text-center">
+        <div className="w-full max-w-6xl card px-8 py-10">
+          <h1 className="text-4xl font-bold text-teal-700 mb-4 text-center">
             Saved Jobs
           </h1>
-          <p className="text-gray-600 text-center mb-8">
+          <p className="text-slate-600 text-center mb-8">
             All the jobs you’ve saved to check out later.
           </p>
 
@@ -99,10 +99,10 @@ const Saved = () => {
               {savedJobs.map((job) => (
                 <div
                   key={job._id}
-                  className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 flex flex-col justify-between hover:shadow-2xl hover:-translate-y-1 transition-all"
+                  className="card p-6 flex flex-col justify-between hover:shadow-2xl hover:-translate-y-1 transition-all"
                 >
                   <div>
-                    <h2 className="text-xl font-semibold text-blue-700 mb-2">
+                    <h2 className="text-xl font-semibold text-teal-700 mb-2">
                       {job.title}
                     </h2>
                     <p className="text-gray-600 mb-3">
@@ -111,10 +111,7 @@ const Saved = () => {
                     <div className="flex flex-wrap gap-2 mb-4">
                       {job.skillsRequired?.length > 0 ? (
                         job.skillsRequired.map((skill, idx) => (
-                          <span
-                            key={idx}
-                            className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium"
-                          >
+                          <span key={idx} className="badge">
                             {skill}
                           </span>
                         ))
@@ -127,7 +124,7 @@ const Saved = () => {
                   </div>
                   <button
                     onClick={() => handleRemove(job._id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-600 transition mt-2"
+                    className="btn-outline text-red-600 border-red-300 hover:bg-red-50 mt-2"
                   >
                     Remove
                   </button>

@@ -47,26 +47,23 @@ function SignUp() {
     <div
       className="
         w-full min-h-screen 
-        bg-[radial-gradient(circle_at_20%_30%,rgba(96,165,250,0.25),transparent_40%),radial-gradient(circle_at_80%_70%,rgba(129,140,248,0.25),transparent_35%),linear-gradient(135deg,#e0f2fe,#bfdbfe,#93c5fd)]
+        brand-gradient-bg
         flex flex-col justify-center items-center
         px-4
       "
     >
       <div className="
         w-full sm:max-w-[450px] 
-        bg-white/95 
-        rounded-2xl 
-        shadow-lg 
-        backdrop-blur-sm
+        card 
         p-8 sm:p-10 
         flex flex-col items-center gap-6
       ">
         {/* Header */}
         <div className="flex flex-col items-center mb-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-blue-500">
+          <h1 className="text-2xl sm:text-3xl font-bold brand-gradient-text">
             Join DesignHire
           </h1>
-          <p className="text-gray-600 text-sm mt-1">
+          <p className="text-slate-600 text-sm mt-1">
             Connect with top creative talent
           </p>
         </div>
@@ -82,7 +79,7 @@ function SignUp() {
           <input
             type="text"
             id="name"
-            className="w-full h-[44px] px-4 rounded-md border border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none text-sm"
+            className="w-full h-[44px] px-4 rounded-md border border-gray-300 focus:border-teal-400 focus:ring-1 focus:ring-teal-400 outline-none text-sm"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -100,7 +97,7 @@ function SignUp() {
           <input
             type="text"
             id="userName"
-            className="w-full h-[44px] px-4 rounded-md border border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none text-sm"
+            className="w-full h-[44px] px-4 rounded-md border border-gray-300 focus:border-teal-400 focus:ring-1 focus:ring-teal-400 outline-none text-sm"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
             required
@@ -118,7 +115,7 @@ function SignUp() {
           <input
             type="email"
             id="email"
-            className="w-full h-[44px] px-4 rounded-md border border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none text-sm"
+            className="w-full h-[44px] px-4 rounded-md border border-gray-300 focus:border-teal-400 focus:ring-1 focus:ring-teal-400 outline-none text-sm"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -136,7 +133,7 @@ function SignUp() {
           <input
             type="password"
             id="password"
-            className="w-full h-[44px] px-4 rounded-md border border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none text-sm"
+            className="w-full h-[44px] px-4 rounded-md border border-gray-300 focus:border-teal-400 focus:ring-1 focus:ring-teal-400 outline-none text-sm"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -144,24 +141,14 @@ function SignUp() {
         </div>
 
         {/* Sign Up Button */}
-        <button
-          onClick={handleSignUp}
-          className="
-            w-full h-[44px] 
-            bg-blue-500 text-white font-semibold rounded-lg 
-            hover:bg-blue-600 active:scale-[0.99] 
-            transition 
-            shadow-md
-            mt-2
-          "
-        >
+        <button onClick={handleSignUp} className="w-full btn-primary mt-2">
           Sign Up
         </button>
 
         {/* Footer */}
-        <p className="text-gray-600 text-sm mt-3">
+        <p className="text-slate-600 text-sm mt-3">
           Already have an account?{" "}
-          <span className="text-blue-500 font-medium hover:underline">
+          <span className="text-teal-700 font-medium hover:underline">
             <Link to="/signin">Sign In</Link>
           </span>
         </p>

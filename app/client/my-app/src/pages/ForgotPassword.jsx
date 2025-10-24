@@ -35,9 +35,9 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-blue-100 px-4">
-      <div className="w-full sm:max-w-[400px] bg-white rounded-xl shadow-md p-6">
-        <h1 className="text-2xl mb-4 font-bold text-blue-500 text-center">
+    <div className="min-h-screen flex flex-col justify-center items-center brand-gradient-bg px-4">
+      <div className="w-full sm:max-w-[400px] card p-6">
+        <h1 className="text-2xl mb-4 font-bold brand-gradient-text text-center">
           Forgot Password
         </h1>
         <form onSubmit={handleForgotPassword} className="flex flex-col gap-5">
@@ -49,20 +49,14 @@ const ForgotPassword = () => {
               id="email"
               type="email"
               value={email}
-              className="h-[44px] px-3 rounded-md border border-blue-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none text-sm"
+              className="h-[44px] px-3 rounded-md border border-teal-300 focus:border-teal-400 focus:ring-1 focus:ring-teal-400 outline-none text-sm"
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
               placeholder="you@email.com"
             />
           </div>
-          <button
-            type="submit"
-            className="h-[44px] bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
-            disabled={status === "loading"}
-          >
-            {status === "loading" ? "Sending..." : "Send Reset Link"}
-          </button>
+          <button type="submit" className="h-[44px] btn-primary" disabled={status === "loading"}>{status === "loading" ? "Sending..." : "Send Reset Link"}</button>
         </form>
         {message && (
           <div
@@ -79,7 +73,7 @@ const ForgotPassword = () => {
         )}
         <div className="mt-4 text-center text-gray-600 text-sm">
           Remembered?{" "}
-          <Link to="/signin" className="text-blue-600 font-medium underline">
+          <Link to="/signin" className="text-teal-700 font-medium underline">
             Sign In
           </Link>
         </div>

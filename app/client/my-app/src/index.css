@@ -1,1 +1,70 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* Brand tokens - bluish/greenish */
+  --color-brand: #0ea5a9; /* teal-500 */
+  --color-brand-600: #0d9488; /* teal-600 */
+  --color-brand-700: #0f766e; /* teal-700 */
+  --color-accent: #22d3ee; /* cyan-400 */
+
+  --radius-xl: 1.25rem;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply font-sans text-slate-800 antialiased;
+  }
+
+  ::selection {
+    @apply bg-teal-500 text-white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-5 py-2.5 rounded-lg font-medium shadow-md hover:shadow-lg hover:opacity-95 active:scale-[0.99] transition;
+  }
+
+  .btn-outline {
+    @apply border border-teal-600 text-teal-700 hover:bg-teal-50 px-5 py-2.5 rounded-lg font-medium transition;
+  }
+
+  .btn-ghost {
+    @apply text-slate-700 hover:bg-slate-100 px-5 py-2.5 rounded-lg font-medium transition;
+  }
+
+  .badge {
+    @apply px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-700;
+  }
+
+  .card {
+    @apply bg-white/90 backdrop-blur-md border border-slate-200 shadow-lg rounded-2xl;
+  }
+
+  .section {
+    @apply max-w-6xl mx-auto px-6;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-lg border border-white/60 shadow-xl;
+  }
+
+  .brand-gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-cyan-500;
+  }
+
+  .brand-gradient-bg {
+    @apply bg-gradient-to-br from-teal-500 via-cyan-500 to-sky-500;
+  }
+}

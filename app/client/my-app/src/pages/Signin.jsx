@@ -37,7 +37,7 @@ function SignIn() {
     <div
       className="
         w-full min-h-screen 
-        bg-[radial-gradient(1200px_800px_at_10%_-10%,#f58529_0%,transparent_35%),radial-gradient(1200px_800px_at_110%_0%,#dd2a7b_0%,transparent_40%),radial-gradient(900px_700px_at_50%_110%,#8134af_0%,transparent_45%),linear-gradient(180deg,#515bd4,#8134af)]
+        brand-gradient-bg
         flex items-center justify-center
       "
     >
@@ -46,11 +46,10 @@ function SignIn() {
         <div
           className="
             w-full lg:w-1/2 h-full 
-            bg-white 
+            card bg-white 
             flex flex-col items-center justify-center
             px-6 sm:px-10 
             gap-5
-            shadow-[0_10px_40px_rgba(0,0,0,0.2)]
           "
         >
           {/* Header */}
@@ -81,19 +80,11 @@ function SignIn() {
             />
           </div>
           {/* Forgot password */}
-          <div className="w-[95%] text-right mt-1 text-sm text-[#0095F6] cursor-pointer hover:underline">
+          <div className="w-[95%] text-right mt-1 text-sm text-teal-700 cursor-pointer hover:underline">
             <Link to="/forgot-password">Forgot Password?</Link>
           </div>
           {/* Button */}
-          <button
-            onClick ={handleSignIn}
-            className="
-              w-[95%] h-[44px] mt-4 rounded-lg font-semibold 
-              bg-[#0095F6] text-white 
-              hover:bg-[#0086dd] active:scale-[0.99] transition
-              shadow-[0_6px_16px_rgba(0,149,246,0.35)]
-            "
-          >
+          <button onClick={handleSignIn} className="w-[95%] btn-primary mt-2">
             Sign in
           </button>
           {/* Footer text */}
@@ -108,7 +99,7 @@ function SignIn() {
         <div
           className="
             md:w-1/2 h-full hidden lg:flex flex-col items-center justify-center 
-            bg-white/10 backdrop-blur-[1px]
+            bg-white/10 backdrop-blur-[2px]
             text-white font-semibold
           "
         >
