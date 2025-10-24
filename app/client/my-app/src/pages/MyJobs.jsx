@@ -27,9 +27,9 @@ function MyJobs() {
     <>
       <Navbar />
       <main className="max-w-6xl mx-auto pt-24 p-6">
-        <h1 className="text-3xl font-bold text-blue-600 mb-4">My Jobs</h1>
+        <h1 className="text-3xl font-bold text-teal-700 mb-4">My Jobs</h1>
 
-        {loading && <p className="text-gray-500">Loading your jobs...</p>}
+        {loading && <p className="text-teal-700">Loading your jobs...</p>}
         {error && <p className="text-red-500">{error}</p>}
 
         {!loading && !error && jobs.length === 0 && (
@@ -41,7 +41,7 @@ function MyJobs() {
             {jobs.map((job) => (
               <li
                 key={job._id}
-                className="p-4 border rounded-md hover:shadow-md transition"
+                className="p-4 card hover:shadow-xl transition"
               >
                 <h2 className="text-xl font-semibold">{job.title}</h2>
                 <p className="text-gray-600">{job.company}</p>

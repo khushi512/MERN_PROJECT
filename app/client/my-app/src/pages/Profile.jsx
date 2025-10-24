@@ -73,7 +73,7 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-sky-500">
+      <div className="flex flex-col min-h-screen brand-gradient-bg">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
           <h3 className="text-white font-semibold text-lg animate-pulse">
@@ -86,10 +86,10 @@ const Profile = () => {
 
   if (errorMsg) {
     return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-sky-500">
+      <div className="flex flex-col min-h-screen brand-gradient-bg">
         <Navbar />
         <div className="flex flex-1 flex-col items-center justify-center text-center">
-          <div className="bg-white p-8 rounded-lg shadow-md w-[90%] sm:w-[400px]">
+          <div className="card p-8 w-[90%] sm:w-[400px]">
             <h2 className="text-red-500 text-lg font-semibold mb-3">
               {errorMsg}
             </h2>
@@ -104,10 +104,10 @@ const Profile = () => {
 
   if (!user) {
     return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-sky-500">
+      <div className="flex flex-col min-h-screen brand-gradient-bg">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <div className="bg-white p-8 rounded-xl shadow-md text-center">
+          <div className="card p-8 text-center">
             <h2 className="text-emerald-600 text-xl font-semibold">
               Profile not found.
             </h2>
@@ -119,38 +119,35 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-sky-500 flex flex-col relative">
+    <div className="min-h-screen brand-gradient-bg flex flex-col relative">
       <Navbar />
 
       <main className="flex-1 pt-24 py-10 px-5 flex flex-col items-center">
-        <div className="w-full max-w-xl bg-white rounded-xl shadow-lg px-8 py-10 mb-8 hover:shadow-xl transition">
+        <div className="w-full max-w-xl card px-8 py-10 mb-8 hover:shadow-xl transition">
           <div className="flex items-center gap-5 mb-6">
-            <div className="h-16 w-16 rounded-full bg-gradient-to-tr from-green-400 to-blue-400 flex items-center justify-center text-white font-bold text-2xl">
+            <div className="h-16 w-16 rounded-full bg-gradient-to-tr from-teal-500 to-cyan-500 flex items-center justify-center text-white font-bold text-2xl">
               {user.name?.charAt(0)?.toUpperCase() || "U"}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-blue-700">{user.name}</h1>
-              <p className="text-green-600 font-medium">@{user.userName}</p>
+              <h1 className="text-2xl font-bold text-teal-700">{user.name}</h1>
+              <p className="text-cyan-700 font-medium">@{user.userName}</p>
               <p className="text-gray-500 text-sm">{user.email}</p>
             </div>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-blue-600 mb-2">Bio</h3>
+            <h3 className="text-lg font-semibold text-teal-600 mb-2">Bio</h3>
             <p className="text-gray-700 leading-relaxed">
               {user.bio || "No bio added yet."}
             </p>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-blue-600 mb-2">Skills</h3>
+            <h3 className="text-lg font-semibold text-teal-600 mb-2">Skills</h3>
             <div className="flex flex-wrap gap-2">
               {user.skills && user.skills.length > 0 ? (
                 user.skills.map((skill, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
-                  >
+                  <span key={idx} className="badge text-sm">
                     {skill}
                   </span>
                 ))
@@ -161,10 +158,7 @@ const Profile = () => {
           </div>
 
           <div className="flex justify-end">
-            <button
-              onClick={handleEditClick}
-              className="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
-            >
+            <button onClick={handleEditClick} className="btn-primary">
               Edit Profile
             </button>
           </div>
@@ -174,54 +168,36 @@ const Profile = () => {
       {/* Edit Modal */}
       {isEditing && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
-          <div className="bg-white w-[90%] sm:w-[400px] p-6 rounded-xl shadow-lg">
-            <h2 className="text-lg font-semibold text-blue-600 mb-4 text-center">
+          <div className="card w-[90%] sm:w-[400px] p-6">
+            <h2 className="text-lg font-semibold text-teal-600 mb-4 text-center">
               Edit Profile
             </h2>
 
             <div className="flex flex-col gap-3">
-              <input
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="border border-gray-300 rounded-lg p-2"
-                placeholder="Full Name"
-              />
+              <input name="name" value={formData.name} onChange={handleInputChange} className="border border-gray-300 rounded-lg p-2 focus:border-teal-400 focus:ring-1 focus:ring-teal-400" placeholder="Full Name" />
               <input
                 name="userName"
                 value={formData.userName}
                 onChange={handleInputChange}
-                className="border border-gray-300 rounded-lg p-2"
+                className="border border-gray-300 rounded-lg p-2 focus:border-teal-400 focus:ring-1 focus:ring-teal-400"
                 placeholder="Username"
               />
               <textarea
                 name="bio"
                 value={formData.bio}
                 onChange={handleInputChange}
-                className="border border-gray-300 rounded-lg p-2 resize-none"
+                className="border border-gray-300 rounded-lg p-2 resize-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400"
                 rows="3"
                 placeholder="Bio"
               />
-              <input
-                name="skills"
-                value={formData.skills}
-                onChange={handleInputChange}
-                className="border border-gray-300 rounded-lg p-2"
-                placeholder="Skills (comma separated)"
-              />
+              <input name="skills" value={formData.skills} onChange={handleInputChange} className="border border-gray-300 rounded-lg p-2 focus:border-teal-400 focus:ring-1 focus:ring-teal-400" placeholder="Skills (comma separated)" />
             </div>
 
             <div className="flex justify-end gap-3 mt-5">
-              <button
-                onClick={handleCancel}
-                className="px-4 py-2 rounded-lg border border-gray-400 text-gray-700 hover:bg-gray-100"
-              >
+              <button onClick={handleCancel} className="btn-ghost">
                 Cancel
               </button>
-              <button
-                onClick={handleSaveChanges}
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
-              >
+              <button onClick={handleSaveChanges} className="btn-primary">
                 Save
               </button>
             </div>

@@ -29,11 +29,11 @@ function AppliedJobs() {
       <main className="max-w-6xl mx-auto p-6 pt-24">
         {/* pt-24 ensures content starts below the fixed navbar */}
 
-        <h1 className="text-3xl font-bold text-blue-600 mb-4">
+        <h1 className="text-3xl font-bold text-teal-700 mb-4">
           Jobs You Applied To
         </h1>
 
-        {loading && <p className="text-gray-500">Loading jobs...</p>}
+        {loading && <p className="text-teal-700">Loading jobs...</p>}
         {error && <p className="text-red-500">{error}</p>}
 
         {!loading && !error && jobs.length === 0 && (
@@ -45,7 +45,7 @@ function AppliedJobs() {
             {jobs.map((job) => (
               <li
                 key={job._id}
-                className="p-4 border rounded-md hover:shadow-md transition"
+                className="p-4 card hover:shadow-xl transition"
               >
                 <h2 className="text-xl font-semibold">{job.title}</h2>
                 <p className="text-gray-600">{job.company}</p>
