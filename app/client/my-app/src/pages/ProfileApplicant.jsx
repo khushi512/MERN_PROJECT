@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCurrentUser, updateUserProfile } from "../apiCalls/authCalls";
 import NavBarApplicant from "../components/NavBarApplicant";
 import { setUserData } from "../redux/userSlice";
+import { getImageUrl } from "../utils/imageUtils";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { Camera, X, Download, File } from "lucide-react";
 
@@ -53,8 +54,7 @@ const ProfileApplicant = () => {
     setIsEditing(true);
     // Show current profile pic as preview
     if (user?.profilePic) {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8001';
-      setPreviewImage(`${backendUrl}${user.profilePic}`);
+      setPreviewImage(getImageUrl(user.profilePic));
     } else {
       setPreviewImage(null);
     }
@@ -157,8 +157,8 @@ const ProfileApplicant = () => {
         <NavBarApplicant />
         <div className="flex flex-1 flex-col items-center justify-center text-center">
           <div className={`p-8 rounded-lg shadow-md w-[90%] sm:w-[400px] ${isDarkMode
-              ? 'bg-red-900/20 border border-red-800 text-red-300'
-              : 'bg-red-50 border border-red-200 text-red-700'
+            ? 'bg-red-900/20 border border-red-800 text-red-300'
+            : 'bg-red-50 border border-red-200 text-red-700'
             }`}>
             <h2 className="text-lg font-semibold mb-3">
               {errorMsg}
@@ -199,8 +199,8 @@ const ProfileApplicant = () => {
               {/* Error Message */}
               {errorMsg && (
                 <div className={`mb-6 px-4 py-3 rounded-lg text-sm ${isDarkMode
-                    ? 'bg-red-900/20 border border-red-800 text-red-300'
-                    : 'bg-red-50 border border-red-200 text-red-700'
+                  ? 'bg-red-900/20 border border-red-800 text-red-300'
+                  : 'bg-red-50 border border-red-200 text-red-700'
                   }`}>
                   {errorMsg}
                 </div>
@@ -211,7 +211,7 @@ const ProfileApplicant = () => {
                 <div className="relative">
                   {user.profilePic ? (
                     <img
-                      src={`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:8001'}${user.profilePic}`}
+                      src={getImageUrl(user.profilePic)}
                       alt={user.name}
                       className="h-24 w-24 rounded-full object-cover border-4 border-cyan-100 shadow-md"
                     />
@@ -245,8 +245,8 @@ const ProfileApplicant = () => {
                       <span
                         key={idx}
                         className={`px-4 py-2 rounded-full text-sm font-medium ${isDarkMode
-                            ? 'bg-cyan-900/50 text-cyan-300'
-                            : 'bg-cyan-100 text-cyan-700'
+                          ? 'bg-cyan-900/50 text-cyan-300'
+                          : 'bg-cyan-100 text-cyan-700'
                           }`}
                       >
                         {skill}
@@ -260,8 +260,8 @@ const ProfileApplicant = () => {
 
               {/* Resume */}
               <div className={`mb-8 p-5 rounded-lg border ${isDarkMode
-                  ? 'bg-cyan-900/20 border-cyan-800'
-                  : 'bg-cyan-50 border-cyan-200'
+                ? 'bg-cyan-900/20 border-cyan-800'
+                : 'bg-cyan-50 border-cyan-200'
                 }`}>
                 <h3 className={`text-lg font-semibold mb-3 flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-800'
                   }`}>
@@ -317,8 +317,8 @@ const ProfileApplicant = () => {
                 {/* Error Message in Modal */}
                 {errorMsg && (
                   <div className={`mb-4 px-4 py-3 rounded-lg text-sm ${isDarkMode
-                      ? 'bg-red-900/20 border border-red-800 text-red-300'
-                      : 'bg-red-50 border border-red-200 text-red-700'
+                    ? 'bg-red-900/20 border border-red-800 text-red-300'
+                    : 'bg-red-50 border border-red-200 text-red-700'
                     }`}>
                     {errorMsg}
                   </div>
@@ -354,8 +354,8 @@ const ProfileApplicant = () => {
                           disabled={uploadingImage}
                         />
                         <span className={`inline-block px-4 py-2 rounded-lg cursor-pointer transition font-medium text-sm ${isDarkMode
-                            ? 'bg-cyan-900/50 text-cyan-300 hover:bg-cyan-900/70'
-                            : 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100'
+                          ? 'bg-cyan-900/50 text-cyan-300 hover:bg-cyan-900/70'
+                          : 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100'
                           }`}>
                           {uploadingImage ? "Uploading..." : "Choose Image"}
                         </span>
@@ -375,8 +375,8 @@ const ProfileApplicant = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 ${isDarkMode
-                        ? 'bg-slate-700 border-slate-600 text-white'
-                        : 'bg-white border-slate-300 text-slate-900'
+                      ? 'bg-slate-700 border-slate-600 text-white'
+                      : 'bg-white border-slate-300 text-slate-900'
                       }`}
                     placeholder="Full Name"
                   />
@@ -392,8 +392,8 @@ const ProfileApplicant = () => {
                     value={formData.userName}
                     onChange={handleInputChange}
                     className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 ${isDarkMode
-                        ? 'bg-slate-700 border-slate-600 text-white'
-                        : 'bg-white border-slate-300 text-slate-900'
+                      ? 'bg-slate-700 border-slate-600 text-white'
+                      : 'bg-white border-slate-300 text-slate-900'
                       }`}
                     placeholder="Username"
                   />
@@ -409,8 +409,8 @@ const ProfileApplicant = () => {
                     value={formData.bio}
                     onChange={handleInputChange}
                     className={`w-full border rounded-lg p-3 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-400 ${isDarkMode
-                        ? 'bg-slate-700 border-slate-600 text-white'
-                        : 'bg-white border-slate-300 text-slate-900'
+                      ? 'bg-slate-700 border-slate-600 text-white'
+                      : 'bg-white border-slate-300 text-slate-900'
                       }`}
                     rows="3"
                     placeholder="Tell us about yourself..."
@@ -427,8 +427,8 @@ const ProfileApplicant = () => {
                     value={formData.skills}
                     onChange={handleInputChange}
                     className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 ${isDarkMode
-                        ? 'bg-slate-700 border-slate-600 text-white'
-                        : 'bg-white border-slate-300 text-slate-900'
+                      ? 'bg-slate-700 border-slate-600 text-white'
+                      : 'bg-white border-slate-300 text-slate-900'
                       }`}
                     placeholder="Skills (comma separated)"
                   />
@@ -451,8 +451,8 @@ const ProfileApplicant = () => {
                           disabled={uploadingImage}
                         />
                         <span className={`inline-block px-4 py-2 rounded-lg cursor-pointer transition font-medium text-sm ${isDarkMode
-                            ? 'bg-cyan-900/50 text-cyan-300 hover:bg-cyan-900/70'
-                            : 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100'
+                          ? 'bg-cyan-900/50 text-cyan-300 hover:bg-cyan-900/70'
+                          : 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100'
                           }`}>
                           {formData.resumeUrl && typeof formData.resumeUrl === 'object' ? formData.resumeUrl.name : "Choose Resume"}
                         </span>
@@ -471,8 +471,8 @@ const ProfileApplicant = () => {
                     onClick={handleCancel}
                     disabled={uploadingImage}
                     className={`px-6 py-2 rounded-lg border font-medium transition disabled:opacity-50 ${isDarkMode
-                        ? 'border-slate-600 text-slate-300 hover:bg-slate-700'
-                        : 'border-slate-400 text-slate-700 hover:bg-slate-100'
+                      ? 'border-slate-600 text-slate-300 hover:bg-slate-700'
+                      : 'border-slate-400 text-slate-700 hover:bg-slate-100'
                       }`}
                   >
                     Cancel
