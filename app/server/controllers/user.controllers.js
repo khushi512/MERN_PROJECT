@@ -1,45 +1,79 @@
 import User from '../models/user.model.js';
+import Job from '../models/job.model.js';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 
-export const getProfile = async (req,res)=>{
-    const userId= req.user.id;
-    if(userId== undefined){
-        return res.status(401).json({message: "Unauthorized access"});
-    }
-    try{
-        const verifiedUser = await User.findById(userId).select('-password').populate('appliedJobs postedJobs');
-        res.status(200).json(verifiedUser);
-    }catch(err){
-        console.error(err.message);
-        throw err;
-    }
+// For ES6 modules, get __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const getProfile = async (req, res) => {
+  const userId = req.user.id;
+  if (userId == undefined) {
+    return res.status(401).json({ message: "Unauthorized access" });
+  }
+  try {
+    const verifiedUser = await User.findById(userId)
+      .select('-password')
+      .populate('appliedJobs postedJobs savedJobs');
+    res.status(200).json(verifiedUser);
+  } catch (err) {
+    console.error(err.message);
+    throw err;
+  }
 };
 
 export const updateProfile = async (req, res) => {
   const userId = req.user?.id;
+  console.log("Request files:", req.files);
+  console.log("Request body:", req.body);
 
   if (!userId) {
     return res.status(401).json({ message: "Unauthorized access" });
   }
 
   try {
-    // Only allow specific fields to be updated
-    const allowedUpdates = ["name", "userName", "bio", "skills"];
-    const updates = {};
+    const commonFields = ["name", "userName", "bio"];
+    const applicantFields = ["skills"];
+    const recruiterFields = ["companyName", "companyWebsite", "companyLocation"];
 
+    let allowedUpdates = [...commonFields];
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.userType === "applicant") {
+      allowedUpdates.push(...applicantFields);
+    } else if (user.userType === "recruiter") {
+      allowedUpdates.push(...recruiterFields);
+    }
+
+    // Prepare update object
+    const updates = {};
     for (let key of allowedUpdates) {
       if (req.body[key] !== undefined) {
         updates[key] = req.body[key];
       }
     }
 
+    // Handle profile picture upload
+    if (req.files?.profilePic) {
+      updates.profilePic = `/uploads/${req.files.profilePic[0].filename}`;
+    }
+
+    // Handle resume upload (only for applicants)
+    if (req.files?.resumeUrl && user.userType === "applicant") {
+      updates.resumeUrl = `/uploads/${req.files.resumeUrl[0].filename}`;
+    }
+
     const updatedUser = await User.findByIdAndUpdate(userId, updates, {
       new: true,
       runValidators: true,
-    }).select("-password"); // don't return password field
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    }).select("-password");
 
     res.status(200).json({
       message: "Profile updated successfully",
@@ -47,52 +81,63 @@ export const updateProfile = async (req, res) => {
     });
   } catch (err) {
     console.error("Error updating profile:", err.message);
-    res.status(500).json({ message: "Error updating profile" });
+    res.status(500).json({ message: err.message || "Error updating profile" });
   }
 };
 
+export const downloadResume = async (req, res) => {
+  try {
+    const { filename } = req.params;
+    
+    // Security: prevent directory traversal attacks
+    if (filename.includes('..') || filename.includes('/')) {
+      return res.status(400).json({ message: "Invalid filename" });
+    }
 
-export const getAppliedJobs = async (req,res)=>{
-    const userId = req.user.id;
-    if(userId == undefined){
-        return res.status(401).json({message: "Unauthorized access"});
+    const filepath = path.join(__dirname, '../uploads', filename);
+    
+    // Check if file exists
+    if (!fs.existsSync(filepath)) {
+      return res.status(404).json({ message: "Resume file not found" });
     }
-    try{
-        const appliedJobs = await User.findById(userId).populate('appliedJobs');
-        res.status(200).json(appliedJobs.appliedJobs);
-    }catch(err){
-        console.error(err.message);
-        throw err;
-    }
+
+    // Set headers to force download
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    
+    // Stream the file
+    const fileStream = fs.createReadStream(filepath);
+    fileStream.pipe(res);
+    
+    fileStream.on('error', (err) => {
+      console.error("File stream error:", err);
+      res.status(500).json({ message: "Error downloading file" });
+    });
+  } catch (err) {
+    console.error("Download resume error:", err);
+    res.status(500).json({ message: "Error downloading resume" });
+  }
 };
 
-export const getPostedJobs = async (req, res) =>{
-    const userId= req.user.id;
-    if(userId == undefined){
-        return res.status(401).json({message: "Unauthorized access"});
-    }
-    try{
-        const postedJobs = await User.findById(userId).populate('postedJobs');
-        res.status(200).json(postedJobs.postedJobs);
-    }catch(err){
-        console.error(err.message);
-        throw err;
-    }
-};
-
-
-// Save a job => POST /api/user/save/:jobId
+// SAVE A JOB => POST /api/user/save/:jobId
 export const saveJob = async (req, res) => {
   const userId = req.user.id;
   const { jobId } = req.params;
 
   try {
     const user = await User.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     if (user.savedJobs.includes(jobId)) {
       return res.status(400).json({ message: "Job already saved" });
     }
+
     user.savedJobs.push(jobId);
     await user.save();
+    
     res.status(200).json({ message: "Job saved successfully" });
   } catch (err) {
     console.error(err.message);
@@ -100,13 +145,18 @@ export const saveJob = async (req, res) => {
   }
 };
 
-// Unsave a job => DELETE /api/user/save/:jobId
+// REMOVE A SAVED JOB => DELETE /api/user/save/:jobId
 export const removeSavedJob = async (req, res) => {
   const userId = req.user.id;
   const { jobId } = req.params;
 
   try {
-    await User.findByIdAndUpdate(userId, { $pull: { savedJobs: jobId } });
+    const user = await User.findByIdAndUpdate(userId, { $pull: { savedJobs: jobId } }, { new: true });
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     res.status(200).json({ message: "Job removed from saved" });
   } catch (err) {
     console.error(err.message);
@@ -114,14 +164,98 @@ export const removeSavedJob = async (req, res) => {
   }
 };
 
-// Get saved jobs => GET /api/user/saved
+// GET ALL SAVED JOBS => GET /api/user/saved
 export const getSavedJobs = async (req, res) => {
   const userId = req.user.id;
+  
   try {
     const user = await User.findById(userId).populate('savedJobs');
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     res.status(200).json(user.savedJobs);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: "Error fetching saved jobs" });
   }
 };
+
+// GET USER BY ID (for public profile) => GET /api/user/:id
+export const getUserById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId).select(
+      "name userName email bio skills profilePic resumeUrl userType"
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error fetching user profile" });
+  }
+};
+
+// GET APPLIED JOBS FOR APPLICANT => GET /api/user/applied
+export const getAppliedJobs = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized access" });
+    }
+
+    // Get all jobs where this user is in applicants array
+    const appliedJobs = await Job.find({
+      "applicants.user": userId
+    })
+      .populate("postedBy", "name companyName")
+      .sort({ postedAt: -1 });
+
+    if (!appliedJobs || appliedJobs.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    // Map jobs to include application status and details
+    const jobsWithStatus = appliedJobs.map(job => {
+      const applicant = job.applicants.find(app => {
+        if (!app.user) return false;
+        const appUserId = typeof app.user === 'string' ? app.user : app.user.toString();
+        return appUserId === userId;
+      });
+
+      return {
+        _id: job._id,
+        title: job.title,
+        description: job.description,
+        skillsRequired: job.skillsRequired || [],
+        employmentType: job.employmentType,
+        location: job.location,
+        salary: job.salary,
+        experience: job.experience,
+        education: job.education,
+        postedBy: job.postedBy,
+        applicationStatus: applicant ? applicant.status : "pending",
+        appliedAt: applicant ? applicant.appliedAt : new Date(),
+        createdAt: job.createdAt,
+        updatedAt: job.updatedAt
+      };
+    });
+
+    return res.status(200).json(jobsWithStatus);
+  } catch (err) {
+    console.error("Get Applied Jobs Error:", err);
+    res.status(500).json({ 
+      message: "Error fetching applied jobs", 
+      error: err.message 
+    });
+  }
+};
+
+

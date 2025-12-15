@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {forgotPassword} from "../apiCalls/authCalls"; // Use your configured axios instance
+import { forgotPassword } from "../apiCalls/authCalls"; // Use your configured axios instance
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -35,35 +35,28 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-blue-100 px-4">
-      <div className="w-full sm:max-w-[400px] bg-white rounded-xl shadow-md p-6">
-        <h1 className="text-2xl mb-4 font-bold text-blue-500 text-center">
-          Forgot Password
-        </h1>
-        <form onSubmit={handleForgotPassword} className="flex flex-col gap-5">
-          <div className="flex flex-col">
-            <label htmlFor="email" className="text-sm font-medium mb-1">
-              Enter your registered email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              className="h-[44px] px-3 rounded-md border border-blue-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none text-sm"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-              placeholder="you@email.com"
-            />
-          </div>
+    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-r from-[#48c6ef] to-[#6f86d6] px-4">
+      <div className="w-[95%] sm:max-w-[400px] bg-white/95 rounded-2xl shadow-md p-6 flex flex-col items-center gap-6 backdrop-blur-sm">
+        <h1 className="text-2xl font-bold text-gray-800 text-center">Forgot Password</h1>
+        <form onSubmit={handleForgotPassword} className="w-full flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Enter your registered email"
+            className="w-full h-[44px] px-3 rounded-md border border-gray-300 bg-gray-50 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+          />
           <button
             type="submit"
-            className="h-[44px] bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
+            className="w-full h-[44px] mt-2 rounded-lg font-semibold bg-gradient-to-r from-[#48c6ef] to-[#6f86d6] text-white hover:opacity-90 active:scale-[0.99] transition shadow-md"
             disabled={status === "loading"}
           >
             {status === "loading" ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
+
         {message && (
           <div
             className={`mt-4 text-sm ${
@@ -71,15 +64,16 @@ const ForgotPassword = () => {
                 ? "text-red-500"
                 : status === "success"
                 ? "text-green-600"
-                : "text-blue-500"
-            }`}
+                : "text-gray-700"
+            } text-center`}
           >
             {message}
           </div>
         )}
+
         <div className="mt-4 text-center text-gray-600 text-sm">
-          Remembered?{" "}
-          <Link to="/signin" className="text-blue-600 font-medium underline">
+          Remembered your password?{" "}
+          <Link to="/signin" className="text-gray-900 font-medium underline">
             Sign In
           </Link>
         </div>
