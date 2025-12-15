@@ -1,23 +1,38 @@
 import multer from 'multer';
-import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Create an 'uploads' folder in your project root
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    
-    // Different prefix based on file type
-    let prefix = 'file-';
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// Configure Cloudinary storage for multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    let folder = 'uploads';
+    let resource_type = 'auto';
+    let allowed_formats = [];
+
     if (file.fieldname === 'profilePic') {
-      prefix = 'profile-';
+      folder = 'uploads/profiles';
+      allowed_formats = ['jpg', 'png', 'jpeg'];
     } else if (file.fieldname === 'resumeUrl') {
-      prefix = 'resume-';
+      folder = 'uploads/resumes';
+      resource_type = 'raw'; // For PDFs and documents
+      allowed_formats = ['pdf', 'doc', 'docx'];
     }
-    
-    cb(null, prefix + uniqueSuffix + path.extname(file.originalname));
-  }
+
+    return {
+      folder: folder,
+      resource_type: resource_type,
+      allowed_formats: allowed_formats,
+      public_id: `${file.fieldname}-${Date.now()}`,
+    };
+  },
 });
 
 const fileFilter = (req, file, cb) => {
@@ -46,7 +61,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit (covers both image and resume)
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
 export default upload;
