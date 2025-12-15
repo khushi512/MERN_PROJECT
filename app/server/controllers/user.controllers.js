@@ -60,14 +60,14 @@ export const updateProfile = async (req, res) => {
       }
     }
 
-    // Handle profile picture upload
+    // Handle profile picture upload (Cloudinary URL)
     if (req.files?.profilePic) {
-      updates.profilePic = `/uploads/${req.files.profilePic[0].filename}`;
+      updates.profilePic = req.files.profilePic[0].path; // Cloudinary URL
     }
 
-    // Handle resume upload (only for applicants)
+    // Handle resume upload (only for applicants) - Cloudinary URL
     if (req.files?.resumeUrl && user.userType === "applicant") {
-      updates.resumeUrl = `/uploads/${req.files.resumeUrl[0].filename}`;
+      updates.resumeUrl = req.files.resumeUrl[0].path; // Cloudinary URL
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updates, {
@@ -88,14 +88,14 @@ export const updateProfile = async (req, res) => {
 export const downloadResume = async (req, res) => {
   try {
     const { filename } = req.params;
-    
+
     // Security: prevent directory traversal attacks
     if (filename.includes('..') || filename.includes('/')) {
       return res.status(400).json({ message: "Invalid filename" });
     }
 
     const filepath = path.join(__dirname, '../uploads', filename);
-    
+
     // Check if file exists
     if (!fs.existsSync(filepath)) {
       return res.status(404).json({ message: "Resume file not found" });
@@ -104,11 +104,11 @@ export const downloadResume = async (req, res) => {
     // Set headers to force download
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.setHeader('Content-Type', 'application/octet-stream');
-    
+
     // Stream the file
     const fileStream = fs.createReadStream(filepath);
     fileStream.pipe(res);
-    
+
     fileStream.on('error', (err) => {
       console.error("File stream error:", err);
       res.status(500).json({ message: "Error downloading file" });
@@ -126,7 +126,7 @@ export const saveJob = async (req, res) => {
 
   try {
     const user = await User.findById(userId);
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -137,7 +137,7 @@ export const saveJob = async (req, res) => {
 
     user.savedJobs.push(jobId);
     await user.save();
-    
+
     res.status(200).json({ message: "Job saved successfully" });
   } catch (err) {
     console.error(err.message);
@@ -152,7 +152,7 @@ export const removeSavedJob = async (req, res) => {
 
   try {
     const user = await User.findByIdAndUpdate(userId, { $pull: { savedJobs: jobId } }, { new: true });
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -167,10 +167,10 @@ export const removeSavedJob = async (req, res) => {
 // GET ALL SAVED JOBS => GET /api/user/saved
 export const getSavedJobs = async (req, res) => {
   const userId = req.user.id;
-  
+
   try {
     const user = await User.findById(userId).populate('savedJobs');
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -251,9 +251,9 @@ export const getAppliedJobs = async (req, res) => {
     return res.status(200).json(jobsWithStatus);
   } catch (err) {
     console.error("Get Applied Jobs Error:", err);
-    res.status(500).json({ 
-      message: "Error fetching applied jobs", 
-      error: err.message 
+    res.status(500).json({
+      message: "Error fetching applied jobs",
+      error: err.message
     });
   }
 };
