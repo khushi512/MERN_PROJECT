@@ -57,8 +57,23 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-    console.error("Error:", err.stack);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("=== GLOBAL ERROR HANDLER ===");
+    console.error("Error name:", err.name);
+    console.error("Error message:", err.message);
+    console.error("Error code:", err.code);
+    console.error("Error field:", err.field);
+    console.error("Error stack:", err.stack);
+
+    if (err.name === 'MulterError') {
+        console.error("MULTER ERROR DETAILS:", err);
+        return res.status(400).json({ message: `Upload error: ${err.message}` });
+    }
+
+    if (err.message && err.message.includes('Invalid file')) {
+        return res.status(400).json({ message: err.message });
+    }
+
+    res.status(500).json({ message: err.message || "Internal Server Error" });
 });
 
 app.listen(PORT, () => {

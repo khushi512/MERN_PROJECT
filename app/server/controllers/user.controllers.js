@@ -26,8 +26,9 @@ export const getProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   const userId = req.user?.id;
-  console.log("Request files:", req.files);
-  console.log("Request body:", req.body);
+  console.log("=== UPDATE PROFILE START ===");
+  console.log("Has files:", !!req.files);
+  console.log("Body keys:", Object.keys(req.body));
 
   if (!userId) {
     return res.status(401).json({ message: "Unauthorized access" });
@@ -56,18 +57,31 @@ export const updateProfile = async (req, res) => {
     const updates = {};
     for (let key of allowedUpdates) {
       if (req.body[key] !== undefined) {
-        updates[key] = req.body[key];
+        // Special handling for skills array
+        if (key === 'skills' && typeof req.body[key] === 'string') {
+          console.log("Skills before split:", req.body[key]);
+          updates[key] = req.body[key].split(',').map(s => s.trim()).filter(Boolean);
+          console.log("Skills after split:", updates[key]);
+        } else {
+          updates[key] = req.body[key];
+        }
       }
     }
 
+    console.log("Updates object keys:", Object.keys(updates));
+
     // Handle profile picture upload (Cloudinary URL)
     if (req.files?.profilePic) {
+      console.log("ProfilePic: uploading to Cloudinary");
       updates.profilePic = req.files.profilePic[0].path; // Cloudinary URL
+      console.log("ProfilePic URL received");
     }
 
     // Handle resume upload (only for applicants) - Cloudinary URL
     if (req.files?.resumeUrl && user.userType === "applicant") {
+      console.log("Resume: uploading to Cloudinary");
       updates.resumeUrl = req.files.resumeUrl[0].path; // Cloudinary URL
+      console.log("Resume URL received");
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updates, {
@@ -75,12 +89,17 @@ export const updateProfile = async (req, res) => {
       runValidators: true,
     }).select("-password");
 
+    console.log("Update successful");
+
     res.status(200).json({
       message: "Profile updated successfully",
       user: updatedUser,
     });
   } catch (err) {
-    console.error("Error updating profile:", err.message);
+    console.error("=== ERROR IN UPDATE PROFILE ===");
+    console.error("Error:", err);
+    console.error("Error message:", err.message);
+    console.error("Error stack:", err.stack);
     res.status(500).json({ message: err.message || "Error updating profile" });
   }
 };

@@ -1,47 +1,56 @@
-import multer from 'multer';
-import cloudinary from 'cloudinary';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinary.js";
 
-// Configure Cloudinary (v1 syntax)
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+console.log("✅ Upload middleware initializing...");
+console.log("Cloudinary config check:", {
+  hasCloudinary: !!cloudinary,
+  configExists: !!cloudinary.config
 });
 
-// Configure Cloudinary storage for multer
+// Use single CloudinaryStorage with dynamic params based on fieldname
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary,
   params: async (req, file) => {
-    let folder = 'uploads';
-    let resource_type = 'auto';
-    let allowed_formats = [];
+    try {
+      console.log(`📤 Processing file upload: ${file.fieldname}, mimetype: ${file.mimetype}`);
 
-    if (file.fieldname === 'profilePic') {
-      folder = 'uploads/profiles';
-      allowed_formats = ['jpg', 'png', 'jpeg'];
-    } else if (file.fieldname === 'resumeUrl') {
-      folder = 'uploads/resumes';
-      resource_type = 'raw'; // For PDFs and documents
-      allowed_formats = ['pdf', 'doc', 'docx'];
+      if (file.fieldname === "profilePic") {
+        console.log("→ Profile picture upload params");
+        return {
+          folder: "profile_pics",
+          allowed_formats: ["jpg", "jpeg", "png"],
+        };
+      } else if (file.fieldname === "resumeUrl") {
+        console.log("→ Resume upload params");
+        return {
+          folder: "resumes",
+          resource_type: "raw",
+        };
+      } else {
+        console.error(`❌ Invalid file field: ${file.fieldname}`);
+        throw new Error(`Invalid file field: ${file.fieldname}`);
+      }
+    } catch (error) {
+      console.error("❌ ERROR in params function:", error);
+      throw error;
     }
-
-    return {
-      folder: folder,
-      resource_type: resource_type,
-      allowed_formats: allowed_formats,
-      public_id: `${file.fieldname}-${Date.now()}`,
-    };
   },
 });
 
+console.log("✅ CloudinaryStorage created");
+
 const fileFilter = (req, file, cb) => {
+  console.log(`🔍 File filter check: ${file.fieldname}, ${file.mimetype}`);
+
   // Allow images for profilePic
   if (file.fieldname === 'profilePic') {
     const allowedMimes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (allowedMimes.includes(file.mimetype)) {
+      console.log("✅ ProfilePic accepted");
       cb(null, true);
     } else {
+      console.log("❌ ProfilePic rejected - invalid type");
       cb(new Error('Only JPG and PNG images are allowed for profile picture'), false);
     }
   }
@@ -49,11 +58,14 @@ const fileFilter = (req, file, cb) => {
   else if (file.fieldname === 'resumeUrl') {
     const allowedMimes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     if (allowedMimes.includes(file.mimetype)) {
+      console.log("✅ Resume accepted");
       cb(null, true);
     } else {
+      console.log("❌ Resume rejected - invalid type");
       cb(new Error('Only PDF, DOC, and DOCX files are allowed for resume'), false);
     }
   } else {
+    console.log(`❌ Invalid field: ${file.fieldname}`);
     cb(new Error('Invalid file field'), false);
   }
 };
@@ -63,5 +75,7 @@ const upload = multer({
   fileFilter,
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
+
+console.log("✅ Multer upload middleware created");
 
 export default upload;

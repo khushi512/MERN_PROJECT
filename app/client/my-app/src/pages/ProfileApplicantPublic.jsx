@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import NavBarRecruiter from "../components/NavBarRecruiter";
 import { getUserPublicProfile } from "../apiCalls/authCalls";
 import { X, Download, File, Mail, User, BookOpen } from "lucide-react";
+import { getImageUrl } from "../utils/imageUtils";
 
 export default function ProfileApplicantPublic() {
   const { id } = useParams();
@@ -60,7 +61,7 @@ export default function ProfileApplicantPublic() {
                 <div className="relative">
                   {user.profilePic ? (
                     <img
-                      src={`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:8001'}${user.profilePic}`}
+                      src={getImageUrl(user.profilePic)}
                       alt={user.name}
                       className="h-24 w-24 rounded-full object-cover border-4 border-white shadow-lg"
                     />
@@ -126,7 +127,10 @@ export default function ProfileApplicantPublic() {
                       <p className="text-gray-600 text-sm">Download to view details</p>
                     </div>
                     <a
-                      href={`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:8001'}/api/user/download-resume/${user.resumeUrl.split('/').pop()}`}
+                      href={getImageUrl(user.resumeUrl)}
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-md hover:shadow-lg"
                     >
                       <Download size={18} />

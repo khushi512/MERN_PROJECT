@@ -40,12 +40,7 @@ export default function JobDetails() {
     const [deleteJobModal, setDeleteJobModal] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
-    // Helper function to get image URL
-    const getImageUrl = (profilePic) => {
-        if (!profilePic) return null;
-        const baseUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8001';
-        return `${baseUrl}${profilePic}`;
-    };
+
 
     useEffect(() => {
         const fetchJob = async () => {
@@ -181,8 +176,8 @@ export default function JobDetails() {
 
             {/* TOP HEADER SECTION */}
             <div className={`py-8 shadow-md transition-colors ${isDarkMode
-                    ? 'bg-gradient-to-r from-cyan-900 via-blue-900 to-indigo-900'
-                    : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600'
+                ? 'bg-gradient-to-r from-cyan-900 via-blue-900 to-indigo-900'
+                : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600'
                 }`}>
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="flex justify-between items-start flex-wrap gap-4">
@@ -263,8 +258,8 @@ export default function JobDetails() {
                                     <span
                                         key={idx}
                                         className={`px-3 py-1 rounded-full text-xs font-medium ${isDarkMode
-                                                ? 'bg-blue-900/40 text-blue-300'
-                                                : 'bg-blue-100 text-blue-800'
+                                            ? 'bg-blue-900/40 text-blue-300'
+                                            : 'bg-blue-100 text-blue-800'
                                             }`}
                                     >
                                         {skill}
@@ -310,8 +305,8 @@ export default function JobDetails() {
                             <button
                                 onClick={() => setShowEditModal(true)}
                                 className={`w-full py-3 rounded-lg font-medium flex items-center justify-center gap-2 mb-3 transition ${isDarkMode
-                                        ? 'bg-indigo-900/40 text-indigo-300 hover:bg-indigo-900/60 border border-indigo-800'
-                                        : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100 border border-indigo-200'
+                                    ? 'bg-indigo-900/40 text-indigo-300 hover:bg-indigo-900/60 border border-indigo-800'
+                                    : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100 border border-indigo-200'
                                     }`}
                             >
                                 <Pencil size={16} /> Edit Job
@@ -320,8 +315,8 @@ export default function JobDetails() {
                             <button
                                 onClick={() => setDeleteJobModal(true)}
                                 className={`w-full py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition ${isDarkMode
-                                        ? 'bg-red-900/40 text-red-300 hover:bg-red-900/60 border border-red-800'
-                                        : 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200'
+                                    ? 'bg-red-900/40 text-red-300 hover:bg-red-900/60 border border-red-800'
+                                    : 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200'
                                     }`}
                             >
                                 <Trash2 size={16} /> Delete Job
@@ -345,8 +340,8 @@ export default function JobDetails() {
                                         type="text"
                                         placeholder="Search applicants..."
                                         className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none transition ${isDarkMode
-                                                ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                                                : 'bg-white border-gray-300 text-gray-900'
+                                            ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                                            : 'bg-white border-gray-300 text-gray-900'
                                             }`}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -360,8 +355,8 @@ export default function JobDetails() {
                                         value={sortBy}
                                         onChange={(e) => setSortBy(e.target.value)}
                                         className={`border rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition ${isDarkMode
-                                                ? 'bg-gray-700 border-gray-600 text-white'
-                                                : 'bg-white border-gray-300 text-gray-900'
+                                            ? 'bg-gray-700 border-gray-600 text-white'
+                                            : 'bg-white border-gray-300 text-gray-900'
                                             }`}
                                     >
                                         <option value="recent">Most Recent</option>
@@ -396,8 +391,8 @@ export default function JobDetails() {
                                                     />
                                                 ) : (
                                                     <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold ${isDarkMode
-                                                            ? 'bg-gradient-to-br from-cyan-600 to-blue-700'
-                                                            : 'bg-gradient-to-br from-cyan-500 to-blue-600'
+                                                        ? 'bg-gradient-to-br from-cyan-600 to-blue-700'
+                                                        : 'bg-gradient-to-br from-cyan-500 to-blue-600'
                                                         }`}>
                                                         {a.name?.charAt(0)}
                                                     </div>
@@ -420,8 +415,8 @@ export default function JobDetails() {
                                                                 <span
                                                                     key={idx}
                                                                     className={`text-xs px-2 py-1 rounded ${isDarkMode
-                                                                            ? 'bg-gray-700 text-gray-300'
-                                                                            : 'bg-gray-100 text-gray-700'
+                                                                        ? 'bg-gray-700 text-gray-300'
+                                                                        : 'bg-gray-100 text-gray-700'
                                                                         }`}
                                                                 >
                                                                     {skill}
@@ -457,8 +452,8 @@ export default function JobDetails() {
                                                     <button
                                                         onClick={() => setSelectedApplicant(a)}
                                                         className={`px-3 py-2 rounded-lg text-sm flex items-center gap-1 transition font-medium ${isDarkMode
-                                                                ? 'bg-blue-900/40 text-blue-300 hover:bg-blue-900/60'
-                                                                : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+                                                            ? 'bg-blue-900/40 text-blue-300 hover:bg-blue-900/60'
+                                                            : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
                                                             }`}
                                                     >
                                                         <Eye size={16} /> View
@@ -470,8 +465,8 @@ export default function JobDetails() {
                                                                 onClick={() => setActionModal({ applicantId: a.id, action: "accepted" })}
                                                                 disabled={updatingApplicantId === a.id}
                                                                 className={`px-3 py-2 rounded-lg text-sm flex items-center gap-1 transition font-medium disabled:opacity-50 ${isDarkMode
-                                                                        ? 'bg-green-900/40 text-green-300 hover:bg-green-900/60'
-                                                                        : 'bg-green-50 text-green-600 hover:bg-green-100'
+                                                                    ? 'bg-green-900/40 text-green-300 hover:bg-green-900/60'
+                                                                    : 'bg-green-50 text-green-600 hover:bg-green-100'
                                                                     }`}
                                                             >
                                                                 <Check size={16} /> Accept
@@ -481,8 +476,8 @@ export default function JobDetails() {
                                                                 onClick={() => setActionModal({ applicantId: a.id, action: "rejected" })}
                                                                 disabled={updatingApplicantId === a.id}
                                                                 className={`px-3 py-2 rounded-lg text-sm flex items-center gap-1 transition font-medium disabled:opacity-50 ${isDarkMode
-                                                                        ? 'bg-red-900/40 text-red-300 hover:bg-red-900/60'
-                                                                        : 'bg-red-50 text-red-600 hover:bg-red-100'
+                                                                    ? 'bg-red-900/40 text-red-300 hover:bg-red-900/60'
+                                                                    : 'bg-red-50 text-red-600 hover:bg-red-100'
                                                                     }`}
                                                             >
                                                                 <XCircle size={16} /> Reject
@@ -528,8 +523,8 @@ export default function JobDetails() {
                                 />
                             ) : (
                                 <div className={`w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg ${isDarkMode
-                                        ? 'bg-gradient-to-br from-cyan-600 to-blue-700'
-                                        : 'bg-gradient-to-br from-cyan-500 to-blue-600'
+                                    ? 'bg-gradient-to-br from-cyan-600 to-blue-700'
+                                    : 'bg-gradient-to-br from-cyan-500 to-blue-600'
                                     }`}>
                                     {selectedApplicant.name?.charAt(0)}
                                 </div>
@@ -639,8 +634,8 @@ export default function JobDetails() {
                                 onClick={() => handleAcceptReject(actionModal.applicantId, actionModal.action)}
                                 disabled={updatingApplicantId !== null}
                                 className={`flex-1 py-2.5 rounded-lg text-white font-medium transition disabled:opacity-50 ${actionModal.action === "accepted"
-                                        ? "bg-green-600 hover:bg-green-700"
-                                        : "bg-red-600 hover:bg-red-700"
+                                    ? "bg-green-600 hover:bg-green-700"
+                                    : "bg-red-600 hover:bg-red-700"
                                     }`}
                             >
                                 {updatingApplicantId === actionModal.applicantId ? "Processing..." : actionModal.action === "accepted" ? "Accept" : "Reject"}
@@ -676,8 +671,8 @@ export default function JobDetails() {
                                 onClick={() => setDeleteJobModal(false)}
                                 disabled={isDeleting}
                                 className={`flex-1 py-2.5 rounded-lg font-medium transition disabled:opacity-50 ${isDarkMode
-                                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                     }`}
                             >
                                 Cancel

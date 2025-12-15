@@ -2,7 +2,7 @@ import { getProfile, updateProfile, getAppliedJobs, getSavedJobs, saveJob, remov
 import express from "express";
 import isAuth from "../middlewares/isAuth.js";
 import { isApplicant } from "../middlewares/userTypeCheck.js";
-import upload from "../middlewares/upload.js";
+import  upload  from "../middlewares/upload.js";
 
 const userRouter = express.Router();
 
