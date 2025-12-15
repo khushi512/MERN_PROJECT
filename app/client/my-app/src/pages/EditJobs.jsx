@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import NavBarRecruiter from "../components/NavBarRecruiter";
 import { getJobById, updateJob } from "../apiCalls/authCalls";
@@ -150,7 +150,7 @@ export default function EditJob() {
                 }
                 className="w-full border p-2.5 rounded mt-1"
               >
-                <option value="">Optional — Select type…</option>
+                <option value="">Optional ΓÇö Select typeΓÇª</option>
                 {EMPLOYMENT_TYPES.map((type) => (
                   <option key={type} value={type}>
                     {type}

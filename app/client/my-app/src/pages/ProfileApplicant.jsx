@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+﻿import React, { useEffect, useState, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCurrentUser, updateUserProfile } from "../apiCalls/authCalls";
 import NavBarApplicant from "../components/NavBarApplicant";
@@ -360,7 +360,7 @@ const ProfileApplicant = () => {
                           {uploadingImage ? "Uploading..." : "Choose Image"}
                         </span>
                       </label>
-                      <p className={`text-xs mt-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Max 5MB • JPG, PNG</p>
+                      <p className={`text-xs mt-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Max 5MB ΓÇó JPG, PNG</p>
                     </div>
                   </div>
                 </div>
@@ -457,10 +457,10 @@ const ProfileApplicant = () => {
                           {formData.resumeUrl && typeof formData.resumeUrl === 'object' ? formData.resumeUrl.name : "Choose Resume"}
                         </span>
                       </label>
-                      <p className={`text-xs mt-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Max 10MB • PDF, DOC, DOCX</p>
+                      <p className={`text-xs mt-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Max 10MB ΓÇó PDF, DOC, DOCX</p>
                     </div>
                     {user.resumeUrl && typeof formData.resumeUrl === 'string' && (
-                      <p className="text-xs text-green-600 font-medium">✓ Current resume uploaded</p>
+                      <p className="text-xs text-green-600 font-medium">Γ£ô Current resume uploaded</p>
                     )}
                   </div>
                 </div>

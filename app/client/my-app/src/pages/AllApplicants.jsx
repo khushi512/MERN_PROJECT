@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+﻿import React, { useEffect, useState, useContext } from "react";
 import NavBarRecruiter from "../components/NavBarRecruiter";
 import { getAllApplicantsList, getMyJobs } from "../apiCalls/authCalls";
 import { Download, File, X } from "lucide-react";
@@ -212,7 +212,7 @@ function AllApplicants() {
                                         : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
                                 }`}
                             >
-                                ← Previous
+                                ΓåÉ Previous
                             </button>
 
                             <span className={`px-4 py-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -228,7 +228,7 @@ function AllApplicants() {
                                         : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
                                 }`}
                             >
-                                Next →
+                                Next ΓåÆ
                             </button>
                         </div>
                     )}
