@@ -22,6 +22,7 @@ import NavBarRecruiter from "../components/NavBarRecruiter";
 import EditJobModal from "../components/EditJobModal";
 import { getJobById, updateApplicationStatus, deleteJob } from "../apiCalls/authCalls";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { getImageUrl } from "../utils/imageUtils";
 
 export default function JobDetails() {
     const { id } = useParams();
