@@ -25,7 +25,7 @@ export const SignIn = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
             maxAge: 24 * 60 * 60 * 1000 // 1 day
         });
 
@@ -38,7 +38,7 @@ export const SignIn = async (req, res) => {
 }
 
 //SignUp User
-export const SignUp = async (req, res)=>{
+export const SignUp = async (req, res) => {
     console.log(req.body);
     try {
         const { name, userName, userType, email, password, bio, skills } = req.body;
@@ -73,7 +73,8 @@ export const SignUp = async (req, res)=>{
 
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: 'strict',
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
             maxAge: 24 * 60 * 60 * 1000 // 1 day
         });
 
@@ -93,14 +94,14 @@ export const LogOut = (req, res) => {
 // Forgot Password
 
 export const ForgotPassword = async (req, res) => {
-    try{
+    try {
         const { email } = req.body;
-        if(!email){
-            return res.status(400).json({message: "Please provide email"});
+        if (!email) {
+            return res.status(400).json({ message: "Please provide email" });
         }
-        const user = await User.findOne({email});
-        if(!user){
-            return res.status(404).json({message: "User with this email does not exist"});
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: "User with this email does not exist" });
         }
         // Generate reset token
         const resetToken = await genToken(user);
@@ -110,9 +111,9 @@ export const ForgotPassword = async (req, res) => {
             resetToken, // Remove this in production, send via email instead
         });
 
-        res.status(200).json({message: "Password updated successfully"});
-    }catch(err){
+        res.status(200).json({ message: "Password updated successfully" });
+    } catch (err) {
         console.error(err.message);
-        res.status(500).json({message: "Error updating password"});
+        res.status(500).json({ message: "Error updating password" });
     }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/NavBar";
+import NavBarRecruiter from "../components/NavBarRecruiter";
 import { getMyJobs } from "../apiCalls/authCalls";
 
 function MyJobs() {
@@ -25,7 +25,7 @@ function MyJobs() {
 
   return (
     <>
-      <Navbar />
+      <NavBarRecruiter />
       <main className="max-w-6xl mx-auto pt-24 p-6">
         <h1 className="text-3xl font-bold text-teal-700 mb-4">My Jobs</h1>
 
