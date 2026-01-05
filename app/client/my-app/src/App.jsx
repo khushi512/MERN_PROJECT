@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -47,10 +44,10 @@ function App() {
         <Route path="/applied-jobs" element={userData && userData.userType === "applicant" ? <AppliedJobs /> : <Navigate to="/signin" />} />
 
         <Route path="/create-job" element={userData && userData.userType === "recruiter" ? <CreateJob /> : <Navigate to="/signin" />} />
-        <Route path="/edit-job/:id" element={userData && userData.userType === "recruiter"? <EditJob /> : <Navigate to="/signin" />} />
+        <Route path="/edit-job/:id" element={userData && userData.userType === "recruiter" ? <EditJob /> : <Navigate to="/signin" />} />
         <Route path="/my-jobs" element={userData && userData.userType === "recruiter" ? <MyJobs /> : <Navigate to="/signin" />} />
         <Route path="/job/:id" element={userData && userData.userType === "recruiter" ? <JobDetails /> : <Navigate to="/signin" />} />
-        <Route path="/all-applicants" element= {userData && userData.userType === "recruiter" ? <AllApplicants  /> : <Navigate to="/signin" />} />
+        <Route path="/all-applicants" element={userData && userData.userType === "recruiter" ? <AllApplicants /> : <Navigate to="/signin" />} />
         <Route path="/profile/:id" element={userData && userData.userType === "recruiter" ? <ProfileApplicantPublic /> : <Navigate to="/signin" />} />
 
         {/*Catch-all route to handle undefined routes */}

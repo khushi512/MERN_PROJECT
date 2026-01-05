@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from 'bcrypt';
-import genToken from "../config/token.js";;
+import genToken from "../config/token.js";
 
 //SignIn User
 export const SignIn = async (req, res) => {
@@ -81,7 +81,7 @@ export const SignUp = async (req, res) => {
         res.status(201).json({ message: "User created successfully", user: newUser, token, });
     } catch (err) {
         console.error(err.message);
-        res.status(500).json({ message: error.message || 'Server error during signup' });
+        res.status(500).json({ message: err.message || 'Server error during signup' });
     }
 }
 
@@ -92,7 +92,6 @@ export const LogOut = (req, res) => {
 }
 
 // Forgot Password
-
 export const ForgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
@@ -110,8 +109,6 @@ export const ForgotPassword = async (req, res) => {
             message: 'Password reset token sent to email',
             resetToken, // Remove this in production, send via email instead
         });
-
-        res.status(200).json({ message: "Password updated successfully" });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: "Error updating password" });

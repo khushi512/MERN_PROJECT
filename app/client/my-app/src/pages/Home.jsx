@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import DashboardApplicant from "./DashboardApplicant";
-import DashboardRecruiter from "./DashboardRecruiter.jsx.jsx";
+import DashboardRecruiter from "./DashboardRecruiter";
 
 function Home() {
   const { userData } = useSelector((state) => state.user);
